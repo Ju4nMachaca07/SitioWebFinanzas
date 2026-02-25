@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FinAsesores — Tu Perfil Financiero, Tu Futuro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --dark: #0A0A0F;
+      --dark-2: #12121A;
+      --dark-3: #1C1C28;
+      --dark-4: #252535;
+      --text: #E8E8F0;
+      --text-muted: #8888AA;
+      --white: #FFFFFF;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to bottom, rgba(10,10,15,0.95), transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+      transition: all 0.3s;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.5px;
+    }
+
+    .logo span { color: var(--gold); }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gold);
+      color: var(--dark);
+      text-decoration: none;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+
+    .nav-cta:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(201,168,76,0.35);
+    }
+
+    .nav-cta svg { width: 18px; height: 18px; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 5% 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse 80% 60% at 70% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 80% at 10% 80%, rgba(201,168,76,0.05) 0%, transparent 50%),
+        linear-gradient(135deg, #0A0A0F 0%, #12121A 100%);
+    }
+
+    .hero-grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 650px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.25);
+      color: var(--gold);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 28px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      margin-bottom: 24px;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--gold);
+      position: relative;
+    }
+
+    h1 em::after {
+      content: '';
+      position: absolute;
+      bottom: 4px; left: 0; right: 0;
+      height: 3px;
+      background: var(--gold);
+      opacity: 0.3;
+      border-radius: 2px;
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 40px;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gold);
+      color: var(--dark);
+      text-decoration: none;
+      padding: 14px 30px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(201,168,76,0.4);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: var(--text);
+      text-decoration: none;
+      padding: 14px 30px;
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: all 0.3s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-3px);
+    }
+
+    .hero-stats {
+      position: absolute;
+      right: 5%;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 2;
+      animation: fadeLeft 0.8s 0.4s ease both;
+    }
+
+    .stat-card {
+      background: rgba(28,28,40,0.8);
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 16px;
+      padding: 22px 28px;
+      backdrop-filter: blur(10px);
+      min-width: 180px;
+      transition: transform 0.3s;
+    }
+
+    .stat-card:hover { transform: translateX(-6px); }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 100px 5%; position: relative; }
+
+    .section-label {
+      font-size: 0.78rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.75;
+      max-width: 560px;
+    }
+
+    /* ── SERVICIOS ── */
+    .services { background: var(--dark-2); }
+
+    .services-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 60px;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .service-card {
+      background: var(--dark-3);
+      border: 1px solid rgba(201,168,76,0.1);
+      border-radius: 20px;
+      padding: 36px 32px;
+      transition: all 0.4s;
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .service-card:hover {
+      border-color: rgba(201,168,76,0.3);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+
+    .service-card:hover::before { opacity: 1; }
+
+    .service-icon {
+      width: 52px; height: 52px;
+      background: rgba(201,168,76,0.1);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      font-size: 1.5rem;
+    }
+
+    .service-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      color: var(--white);
+    }
+
+    .service-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .service-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--gold);
+      font-size: 0.88rem;
+      font-weight: 500;
+      text-decoration: none;
+      margin-top: 20px;
+      transition: gap 0.3s;
+    }
+
+    .service-link:hover { gap: 10px; }
+
+    /* ── PROCESO ── */
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0;
+      margin-top: 60px;
+      position: relative;
+    }
+
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.3;
+    }
+
+    .step {
+      text-align: center;
+      padding: 0 20px;
+      position: relative;
+    }
+
+    .step-num {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: var(--dark-3);
+      border: 2px solid rgba(201,168,76,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--gold);
+      position: relative;
+      z-index: 2;
+      transition: all 0.3s;
+    }
+
+    .step:hover .step-num {
+      background: var(--gold);
+      color: var(--dark);
+      transform: scale(1.1);
+    }
+
+    .step h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--white);
+    }
+
+    .step p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── REPORTES CREDITICIOS ── */
+    .credit-section {
+      background: var(--dark-3);
+      overflow: hidden;
+    }
+
+    .credit-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .credit-visual {
+      position: relative;
+    }
+
+    .credit-card-mock {
+      background: linear-gradient(135deg, var(--dark-4), var(--dark-2));
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 24px;
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .credit-card-mock::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(201,168,76,0.08), transparent 70%);
+    }
+
+    .score-ring {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .score-circle {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      border: 4px solid rgba(201,168,76,0.15);
+      border-top-color: var(--gold);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      animation: spin-slow 8s linear infinite;
+      position: relative;
+    }
+
+    .score-inner {
+      position: absolute;
+      text-align: center;
+      animation: spin-slow 8s linear infinite reverse;
+    }
+
+    .score-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .score-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    .credit-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .bar-row { display: flex; flex-direction: column; gap: 6px; }
+
+    .bar-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+    }
+
+    .bar-meta span:first-child { color: var(--text-muted); }
+    .bar-meta span:last-child { color: var(--gold); font-weight: 500; }
+
+    .bar-track {
+      height: 6px;
+      background: var(--dark);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 3px;
+      animation: barGrow 1.5s ease both;
+    }
+
+    .credit-features {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .feature-icon {
+      width: 44px; height: 44px;
+      background: rgba(201,168,76,0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .feature-item h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--white);
+    }
+
+    .feature-item p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── TESTIMONIOS ── */
+    .testimonials { background: var(--dark-2); }
+
+    .swiper { margin-top: 50px; padding-bottom: 50px !important; }
+
+    .testimonial-card {
+      background: var(--dark-3);
+      border: 1px solid rgba(201,168,76,0.1);
+      border-radius: 20px;
+      padding: 36px;
+      height: auto !important;
+    }
+
+    .stars { color: var(--gold); font-size: 1.1rem; margin-bottom: 20px; }
+
+    .testimonial-text {
+      color: var(--text-muted);
+      font-size: 0.97rem;
+      line-height: 1.75;
+      margin-bottom: 28px;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .author-avatar {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--dark-4));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: var(--dark);
+      font-size: 1.1rem;
+    }
+
+    .author-name { font-weight: 600; font-size: 0.95rem; }
+    .author-detail { font-size: 0.8rem; color: var(--text-muted); }
+
+    .swiper-pagination-bullet { background: var(--gold) !important; }
+
+    /* ── FAQ ── */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 50px;
+    }
+
+    .faq-item {
+      background: var(--dark-3);
+      border: 1px solid rgba(201,168,76,0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+
+    .faq-item.open { border-color: rgba(201,168,76,0.3); }
+
+    .faq-question {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 24px;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      gap: 16px;
+    }
+
+    .faq-arrow {
+      width: 28px; height: 28px;
+      background: rgba(201,168,76,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--gold);
+      font-size: 1rem;
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    .faq-item.open .faq-arrow {
+      transform: rotate(45deg);
+      background: var(--gold);
+      color: var(--dark);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s;
+      padding: 0 24px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 300px;
+      padding: 0 24px 22px;
+    }
+
+    /* ── CTA FINAL ── */
+    .cta-section {
+      background: linear-gradient(135deg, var(--dark-3) 0%, var(--dark-2) 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(201,168,76,0.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-section .section-title { margin: 0 auto 16px; max-width: 600px; }
+    .cta-section .section-desc { margin: 0 auto 40px; text-align: center; }
+
+    /* ── WHATSAPP FLOAT ── */
+    .wa-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 999;
+      width: 60px; height: 60px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 25px rgba(37,211,102,0.45);
+      text-decoration: none;
+      transition: all 0.3s;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .wa-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 10px 35px rgba(37,211,102,0.6);
+    }
+
+    .wa-float svg { width: 32px; height: 32px; }
+
+    .wa-tooltip {
+      position: absolute;
+      right: 74px;
+      background: var(--dark-3);
+      color: var(--white);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      border: 1px solid rgba(201,168,76,0.2);
+    }
+
+    .wa-float:hover .wa-tooltip { opacity: 1; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid rgba(201,168,76,0.1);
+      padding: 60px 5% 30px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 50px;
+    }
+
+    .footer-brand .logo { display: block; margin-bottom: 16px; }
+
+    .footer-brand p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      max-width: 300px;
+    }
+
+    .footer-col h5 {
+      font-size: 0.82rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .footer-col ul { list-style: none; }
+
+    .footer-col ul li {
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .footer-col ul li a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-col ul li a:hover { color: var(--gold); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent);
+      margin: 0 5%;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeLeft {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes spin-slow {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes barGrow {
+      from { width: 0; }
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-stats { display: none; }
+      .credit-inner { grid-template-columns: 1fr; gap: 40px; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+      .process-steps::before { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      section { padding: 70px 5%; }
+      .hero { padding: 100px 5% 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">Fin<span>Asesores</span></div>
+    <a href="https://wa.me/591TUNUMERO" target="_blank" class="nav-cta">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.115.553 4.103 1.523 5.83L.057 23.5l5.784-1.517A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.808 9.808 0 01-5.032-1.39l-.36-.214-3.733.979 1.004-3.63-.237-.374A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+      Contactar Asesor
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-lines"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Asesoría financiera personalizada</div>
+      <h1>Tu perfil crediticio,<br>tu <em>futuro</em> financiero</h1>
+      <p class="hero-desc">
+        Analizamos tu reporte crediticio, diseñamos tu perfil financiero y creamos proyecciones a medida para que tomes decisiones con claridad y confianza.
+      </p>
+      <div class="hero-actions">
+        <a href="https://wa.me/591TUNUMERO" target="_blank" class="btn-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.115.553 4.103 1.523 5.83L.057 23.5l5.784-1.517A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.808 9.808 0 01-5.032-1.39l-.36-.214-3.733.979 1.004-3.63-.237-.374A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+          Hablar con un asesor
+        </a>
+        <a href="#servicios" class="btn-secondary">
+          Ver servicios ↓
+        </a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-number">+500</div>
+        <div class="stat-label">Clientes asesorados</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">98%</div>
+        <div class="stat-label">Satisfacción</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">5★</div>
+        <div class="stat-label">Calificación promedio</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SERVICIOS -->
+  <section class="services" id="servicios">
+    <div class="services-header">
+      <div>
+        <div class="section-label reveal">Lo que hacemos</div>
+        <div class="section-title reveal">Servicios diseñados<br>para tu crecimiento</div>
+      </div>
+      <p class="section-desc reveal">Cada servicio está pensado para darte claridad financiera y el poder de tomar decisiones informadas.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">📊</div>
+        <h3>Análisis de Reporte Crediticio</h3>
+        <p>Revisamos en detalle tu historial crediticio, identificamos inconsistencias y te explicamos cada punto de tu reporte de forma clara y sencilla.</p>
+        <a href="https://wa.me/591TUNUMERO" target="_blank" class="service-link">Consultar ahora →</a>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">💼</div>
+        <h3>Perfil Financiero Personalizado</h3>
+        <p>Construimos tu perfil financiero completo: ingresos, deudas, activos y comportamiento crediticio para que tengas una visión 360° de tu situación.</p>
+        <a href="https://wa.me/591TUNUMERO" target="_blank" class="service-link">Consultar ahora →</a>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">📈</div>
+        <h3>Proyecciones y Planificación</h3>
+        <p>Diseñamos proyecciones financieras a corto, mediano y largo plazo para que puedas planificar préstamos, inversiones o metas personales con datos reales.</p>
+        <a href="https://wa.me/591TUNUMERO" target="_blank" class="service-link">Consultar ahora →</a>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🏦</div>
+        <h3>Asesoría para Créditos Bancarios</h3>
+        <p>Te orientamos en el proceso de solicitud de préstamos personales o empresariales, maximizando tus posibilidades de aprobación.</p>
+        <a href="https://wa.me/591TUNUMERO" target="_blank" class="service-link">Consultar ahora →</a>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🔍</div>
+        <h3>Revisión y Corrección de Reportes</h3>
+        <p>Detectamos errores en tu historial crediticio ante las centrales de riesgo y te acompañamos en el proceso de corrección y mejora de tu score.</p>
+        <a href="https://wa.me/591TUNUMERO" target="_blank" class="service-link">Consultar ahora →</a>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🎯</div>
+        <h3>Educación Financiera</h3>
+        <p>Sesiones de asesoría personalizadas donde te enseñamos a leer tu reporte, entender tu score y tomar el control de tus finanzas.</p>
+        <a href="https://wa.me/591TUNUMERO" target="_blank" class="service-link">Consultar ahora →</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROCESO -->
+  <section>
+    <div style="text-align:center; margin-bottom: 0;">
+      <div class="section-label reveal">Cómo trabajamos</div>
+      <div class="section-title reveal" style="margin: 0 auto;">Simple, rápido y transparente</div>
+    </div>
+    <div class="process-steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <h4>Contacto Inicial</h4>
+        <p>Nos escribes por WhatsApp y un asesor te atiende de inmediato.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <h4>Diagnóstico</h4>
+        <p>Analizamos tu reporte crediticio y situación financiera actual.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <h4>Perfil y Proyección</h4>
+        <p>Construimos tu perfil y diseñamos proyecciones personalizadas.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">04</div>
+        <h4>Plan de Acción</h4>
+        <p>Te entregamos un plan concreto con pasos claros a seguir.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- REPORTES CREDITICIOS -->
+  <section class="credit-section" id="reportes">
+    <div class="credit-inner">
+      <div class="credit-visual reveal">
+        <div class="credit-card-mock">
+          <div class="score-ring">
+            <div class="score-circle">
+              <div class="score-inner">
+                <div class="score-number">742</div>
+                <div class="score-label">SCORE</div>
+              </div>
+            </div>
+          </div>
+          <div class="credit-bars">
+            <div class="bar-row">
+              <div class="bar-meta"><span>Historial de pagos</span><span>Excelente</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:88%"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>Utilización de crédito</span><span>Muy Bueno</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:72%"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>Antigüedad crediticia</span><span>Bueno</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:60%"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-meta"><span>Tipos de crédito</span><span>Regular</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:45%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="credit-features">
+        <div class="section-label reveal">Reportes Crediticios</div>
+        <div class="section-title reveal">Entiende tu reporte,<br>mejora tu score</div>
+        <p class="section-desc reveal">Tu reporte crediticio es la llave para acceder a mejores créditos, tasas más bajas y oportunidades financieras. Nosotros te ayudamos a entenderlo y optimizarlo.</p>
+        <div class="feature-item reveal">
+          <div class="feature-icon">🔎</div>
+          <div>
+            <h4>Lectura e interpretación completa</h4>
+            <p>Te explicamos cada sección de tu reporte ante las centrales de riesgo de forma simple.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal">
+          <div class="feature-icon">⚡</div>
+          <div>
+            <h4>Detección de errores y deudas</h4>
+            <p>Identificamos registros incorrectos o deudas que afectan negativamente tu calificación.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal">
+          <div class="feature-icon">🚀</div>
+          <div>
+            <h4>Estrategia de mejora de score</h4>
+            <p>Diseñamos un plan personalizado para mejorar tu puntaje crediticio de forma progresiva.</p>
+          </div>
+        </div>
+        <a href="https://wa.me/591TUNUMERO" target="_blank" class="btn-primary" style="align-self: flex-start; margin-top: 10px;">
+          Revisar mi reporte →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- TESTIMONIOS -->
+  <section class="testimonials" id="testimonios">
+    <div style="text-align:center;">
+      <div class="section-label reveal">Testimonios</div>
+      <div class="section-title reveal">Lo que dicen nuestros clientes</div>
+    </div>
+    <div class="swiper reveal">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">"Nunca entendí mi reporte crediticio hasta que los contacté. Me explicaron todo con calma y en pocas semanas ya tenía un plan claro para mejorar mi situación."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">M</div>
+              <div>
+                <div class="author-name">María Quispe</div>
+                <div class="author-detail">Arequipa, Perú</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">"Gracias a las proyecciones que me armaron pude solicitar un préstamo con mucha más confianza. El banco aprobó mi crédito sin problemas."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">C</div>
+              <div>
+                <div class="author-name">Carlos Mamani</div>
+                <div class="author-detail">Lima, Perú</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">"Tenía una deuda en mi reporte que ni sabía que existía. Me ayudaron a gestionarla y ahora mi score mejoró considerablemente. ¡Muy recomendados!"</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">A</div>
+              <div>
+                <div class="author-name">Andrea Flores</div>
+                <div class="author-detail">Cusco, Perú</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">"Profesionales, rápidos y muy claros en su asesoría. Me ayudaron a entender mi perfil financiero y ahora sé exactamente qué pasos seguir para mis metas."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">R</div>
+              <div>
+                <div class="author-name">Roberto Huanca</div>
+                <div class="author-detail">Arequipa, Perú</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div style="text-align:center; margin-bottom: 0;">
+      <div class="section-label reveal">Preguntas frecuentes</div>
+      <div class="section-title reveal" style="margin: 0 auto;">Todo lo que necesitas saber</div>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Qué incluye el análisis de mi reporte crediticio?
+          <span class="faq-arrow">+</span>
+        </button>
+        <div class="faq-answer">Incluye la revisión completa de tu historial ante las centrales de riesgo, identificación de deudas, errores o inconsistencias, interpretación de tu score y recomendaciones concretas para mejorar tu calificación.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Cuánto tiempo toma recibir mi perfil financiero?
+          <span class="faq-arrow">+</span>
+        </button>
+        <div class="faq-answer">Una vez que nos proporcionas la información necesaria, tu perfil financiero completo con proyecciones está listo en un plazo de 24 a 48 horas hábiles.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Pueden ayudarme si tengo deudas o mal historial?
+          <span class="faq-arrow">+</span>
+        </button>
+        <div class="faq-answer">Sí, de hecho es uno de los casos más frecuentes que atendemos. Analizamos tu situación actual y diseñamos una estrategia realista para mejorar tu perfil crediticio paso a paso.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Es confidencial mi información financiera?
+          <span class="faq-arrow">+</span>
+        </button>
+        <div class="faq-answer">Absolutamente. Toda la información que compartes con nosotros es tratada con absoluta confidencialidad. No compartimos tus datos con terceros bajo ninguna circunstancia.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Pueden ayudarme a mejorar mi score para un préstamo?
+          <span class="faq-arrow">+</span>
+        </button>
+        <div class="faq-answer">Sí. Diseñamos un plan personalizado con acciones concretas para mejorar tu score crediticio y aumentar tus probabilidades de aprobación en entidades bancarias.</div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Cómo inicio el proceso de asesoría?
+          <span class="faq-arrow">+</span>
+        </button>
+        <div class="faq-answer">Es muy simple: solo haz clic en el botón de WhatsApp, cuéntanos tu situación y un asesor especializado te contactará de inmediato para guiarte desde el primer paso.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CTA FINAL -->
+  <section class="cta-section">
+    <div class="section-label reveal" style="text-align:center;">Empieza hoy</div>
+    <div class="section-title reveal">¿Listo para tomar el<br>control de tus finanzas?</div>
+    <p class="section-desc reveal" style="text-align:center;">Un asesor especializado está disponible para ayudarte a entender tu situación crediticia y trazar el camino hacia tus metas financieras.</p>
+    <a href="https://wa.me/591TUNUMERO" target="_blank" class="btn-primary reveal" style="display:inline-flex; margin: 0 auto;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.115.553 4.103 1.523 5.83L.057 23.5l5.784-1.517A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.808 9.808 0 01-5.032-1.39l-.36-.214-3.733.979 1.004-3.63-.237-.374A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+      Hablar con un asesor ahora
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo">Fin<span>Asesores</span></span>
+        <p>Asesoría financiera personalizada para que entiendas tu reporte crediticio, mejores tu score y tomes decisiones inteligentes sobre tu futuro.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Servicios</h5>
+        <ul>
+          <li><a href="#servicios">Reportes crediticios</a></li>
+          <li><a href="#servicios">Perfil financiero</a></li>
+          <li><a href="#servicios">Proyecciones</a></li>
+          <li><a href="#servicios">Asesoría de créditos</a></li>
+          <li><a href="#servicios">Educación financiera</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contacto</h5>
+        <ul>
+          <li>WhatsApp: +591 XXX XXXX</li>
+          <li>Email: contacto@ejemplo.com</li>
+          <li>Arequipa, Perú</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 FinAsesores. Todos los derechos reservados.</span>
+      <span>Asesoría financiera profesional</span>
+    </div>
+  </footer>
+
+  <!-- WHATSAPP FLOAT -->
+  <a href="https://wa.me/591TUNUMERO" target="_blank" class="wa-float">
+    <span class="wa-tooltip">💬 Chatea con nosotros</span>
+    <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.115.553 4.103 1.523 5.83L.057 23.5l5.784-1.517A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.808 9.808 0 01-5.032-1.39l-.36-.214-3.733.979 1.004-3.63-.237-.374A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+  </a>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    // Swiper
+    new Swiper('.swiper', {
+      slidesPerView: 1,
+      spaceBetween: 24,
+      loop: true,
+      autoplay: { delay: 4000, disableOnInteraction: false },
+      pagination: { el: '.swiper-pagination', clickable: true },
+      breakpoints: {
+        640: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 }
+      }
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // FAQ
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+
+    // Navbar scroll
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('nav');
+      nav.style.background = window.scrollY > 50
+        ? 'rgba(10,10,15,0.97)'
+        : 'linear-gradient(to bottom, rgba(10,10,15,0.95), transparent)';
+    });
+  </script>
+</body>
+</html>
